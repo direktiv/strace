@@ -51,10 +51,7 @@ func NewTracker(args []string) (*Tracker, error) {
 		return nil, fmt.Errorf("could not start binary \"%s\", err=%v", args[0], err)
 	}
 
-	err = pCmd.Wait()
-	if err != nil {
-		return nil, fmt.Errorf("Wait returned: %v", err)
-	}
+	pCmd.Wait()
 
 	return &Tracker{
 		pid:         pCmd.Process.Pid,
