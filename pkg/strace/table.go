@@ -11,8 +11,10 @@
 
 package strace
 
+// SyscallArgType as uint8
 type SyscallArgType uint8
 
+// List of available syscall arg types
 const (
 	ArgEmpty   SyscallArgType = 0
 	ArgInteger SyscallArgType = 1

@@ -16,14 +16,14 @@ import (
 )
 
 const (
-	MaxArgLen = 50
-	MaxArgs   = 6
+	maxArgLen = 50
+	maxArgs   = 6
 )
 
 type tracker struct {
 	pid         int
 	currReg     syscall.PtraceRegs
-	currRegArgs [MaxArgs]uint64
+	currRegArgs [maxArgs]uint64
 }
 
 func (sT *tracker) Pid() int {
@@ -40,6 +40,7 @@ var (
 )
 
 func NewTracker(args []string) (*tracker, error) {
+
 	// Execute Command
 	pCmd := exec.Command(args[0], args[1:]...)
 
@@ -49,12 +50,12 @@ func NewTracker(args []string) (*tracker, error) {
 
 	err := pCmd.Start()
 	if err != nil {
-		return nil, fmt.Errorf("could not start binary \"%s\", err=%v\n", args[0], err)
+		return nil, fmt.Errorf("could not start binary \"%s\", err=%v", args[0], err)
 	}
 
 	err = pCmd.Wait()
 	if err != nil {
-		fmt.Errorf("Wait returned: %v\n", err)
+		return nil, fmt.Errorf("Wait returned: %v", err)
 	}
 
 	return &tracker{
@@ -101,9 +102,9 @@ func (sT *tracker) Start() (finished bool, err error) {
 					argPrintString += fmt.Sprintf("0x%x, ", sT.currRegArgs[i])
 					break
 				case ArgString:
-					count, val := readRegString(sT.pid, sT.currRegArgs[i], MaxArgLen)
+					count, val := readRegString(sT.pid, sT.currRegArgs[i], maxArgLen)
 					argPrintString += fmt.Sprintf("\"%s\"", strings.ReplaceAll(string(val), "\n", `\n`))
-					if count == MaxArgLen {
+					if count == maxArgLen {
 						argPrintString += "..."
 					}
 					argPrintString += ", "
@@ -159,9 +160,9 @@ func readRegString(pid int, addr uint64, max uint64) (count uint64, val []byte) 
 			if buf[bI] == 0 || (count == max && max != 0) {
 				// DONE - Have read max data or zero value byte was found
 				return count, val
-			} else {
-				val = append(val, buf[bI])
 			}
+
+			val = append(val, buf[bI])
 
 			if max != 0 {
 				count++

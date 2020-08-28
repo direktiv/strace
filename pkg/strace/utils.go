@@ -11,6 +11,7 @@ import (
 
 var osExit = os.Exit
 
+// LogFatalWithExitCode prints error code and exits with supplied exit code
 func LogFatalWithExitCode(err error, exitCode int) {
 	os.Stdout.WriteString(err.Error())
 	osExit(exitCode)

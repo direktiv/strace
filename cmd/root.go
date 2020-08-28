@@ -33,9 +33,9 @@ Current Limitations:
 			log.Fatal(err)
 		} else if fin, err := newTracker.Start(); err != nil {
 			if fin {
-				strace.LogFatalWithExitCode(fmt.Errorf("strace finished on pid=%v with error, %v\n", newTracker.Pid(), err), 0)
+				strace.LogFatalWithExitCode(fmt.Errorf("strace finished on pid=%v with error, %v", newTracker.Pid(), err), 0)
 			} else {
-				strace.LogFatalWithExitCode(fmt.Errorf("strace panicked on pid=%v with error, %v\n", newTracker.Pid(), err), 3)
+				strace.LogFatalWithExitCode(fmt.Errorf("strace panicked on pid=%v with error, %v", newTracker.Pid(), err), 3)
 			}
 		}
 
