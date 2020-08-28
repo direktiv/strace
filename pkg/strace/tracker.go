@@ -20,26 +20,24 @@ const (
 	maxArgs   = 6
 )
 
-type tracker struct {
+// Tracker struct
+type Tracker struct {
 	pid         int
 	currReg     syscall.PtraceRegs
 	currRegArgs [maxArgs]uint64
 }
 
-func (sT *tracker) Pid() int {
+// Pid returns pid of tracker process
+func (sT *Tracker) Pid() int {
 	return sT.pid
 }
 
-// Strace loggers
-var (
-	TraceLogInfo func(string, ...interface{}) = func(s string, i ...interface{}) {
-		os.Stdout.WriteString(fmt.Sprintf(s, i...))
-	}
+func traceLogInfo(s string, i ...interface{}) {
+	os.Stdout.WriteString(fmt.Sprintf(s, i...))
+}
 
-	TraceLogError func(string, ...interface{})
-)
-
-func NewTracker(args []string) (*tracker, error) {
+// NewTracker returns new tracker object
+func NewTracker(args []string) (*Tracker, error) {
 
 	// Execute Command
 	pCmd := exec.Command(args[0], args[1:]...)
@@ -58,18 +56,18 @@ func NewTracker(args []string) (*tracker, error) {
 		return nil, fmt.Errorf("Wait returned: %v", err)
 	}
 
-	return &tracker{
+	return &Tracker{
 		pid:         pCmd.Process.Pid,
 		currReg:     syscall.PtraceRegs{},
 		currRegArgs: [6]uint64{},
 	}, nil
 }
 
-// Start: Starts the strace tracking on a given pid
+// Start starts the strace tracking on a given pid
 // Limitations:
 //	* Cannot print the names of flags or special values, will only print the raw integer in its place.
 //	* Cannot display the Errno Names, but can display their associated error message.
-func (sT *tracker) Start() (finished bool, err error) {
+func (sT *Tracker) Start() (finished bool, err error) {
 	exit := true
 
 	// Tracking Loop
@@ -88,7 +86,8 @@ func (sT *tracker) Start() (finished bool, err error) {
 
 			sInfo := syscallTable[sysCallName]
 
-			var argPrintString string = ""
+			var argPrintString string
+
 			for i := range sInfo.Args {
 				switch sInfo.Args[i] {
 				case ArgEmpty:
@@ -128,7 +127,7 @@ func (sT *tracker) Start() (finished bool, err error) {
 				returnValStr = fmt.Sprintf("%d", returnVal)
 			}
 
-			TraceLogInfo("%s(%s) = %s\n", sysCallName, argPrintString, returnValStr) // Print Syscall
+			traceLogInfo("%s(%s) = %s\n", sysCallName, argPrintString, returnValStr) // Print Syscall
 		}
 
 		err := syscall.PtraceSyscall(sT.pid, 0)
@@ -171,7 +170,7 @@ func readRegString(pid int, addr uint64, max uint64) (count uint64, val []byte) 
 	}
 }
 
-func (sT *tracker) updateRegister() error {
+func (sT *Tracker) updateRegister() error {
 	// Get new Register
 	err := syscall.PtraceGetRegs(sT.pid, &sT.currReg)
 	if err != nil {
