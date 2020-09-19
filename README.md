@@ -1,5 +1,8 @@
 # strace
 
+[![Build Status](https://travis-ci.org/vorteil/strace.svg?branch=master)](https://travis-ci.org/vorteil/strace) [![Maintainability](https://api.codeclimate.com/v1/badges/28304b790bcb6763c9c2/maintainability)](https://codeclimate.com/github/vorteil/strace/maintainability) [![Go Report Card](https://goreportcard.com/badge/github.com/vorteil/strace)](https://goreportcard.com/report/github.com/vorteil/strace)
+
+
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/ef616f8f26d4458dbb2addae9cfe4e09)](https://www.codacy.com/gh/vorteil/strace?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=vorteil/strace&amp;utm_campaign=Badge_Grade) [![Build Status](https://travis-ci.org/vorteil/strace.svg?branch=master)](https://travis-ci.org/vorteil/strace) [![codecov](https://codecov.io/gh/vorteil/strace/branch/master/graph/badge.svg)](https://codecov.io/gh/vorteil/strace)
 
 strace is a simple strace-ing tool for [vorteil.io](http://www.vorteil.io).
