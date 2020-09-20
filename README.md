@@ -13,7 +13,7 @@ To enable strace on an app on [vorteil.io](http://www.vorteil.io) micro vm it ne
   strace = true
 ```
 
-This configuration enables trace on an application and prints it to stdout:
+This configuration enables strace on an application and prints it to stdout:
 
 ```sh
 brk(0) = 94819228717056
